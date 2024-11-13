@@ -1,0 +1,69 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block page_title %}
+<div class="d-flex gap-3 align-items-center">
+    <h1>Sign up</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="row mt-4">
+            <div class="col-3">
+                <label for="Login" class="col-form-label">Login</label>
+            </div>
+            <div class="col">
+                <input class="form-control mb-3" type="text" placeholder="dr pepper" aria-label="login" id="Login">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-3">
+                <label for="Email" class="col-form-label">Email</label>
+            </div>
+            <div class="col">
+                <input type="email" class="form-control" id="Email" placeholder="dr.pepper@mail.ru">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-3">
+                <label for="Nickname" class="col-form-label">Login</label>
+            </div>
+            <div class="col">
+                <input class="form-control" type="text" placeholder="Dr. Pepper" aria-label="login" id="Nickname">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <label for="inputPassword" class="col-form-label" placeholder="********">Password</label>
+            </div>
+            <div class="col">
+                <input type="password" class="form-control mb-3" id="inputPassword">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <label for="inputPassword" class="col-form-label" placeholder="********">Repeat Password</label>
+            </div>
+            <div class="col">
+                <input type="password" class="form-control mb-3" id="inputPassword">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-3">
+                <label for="UploadAvatar" class="col-form-label">Upload avatar</label>
+            </div>
+            <div class="col">
+                <input class="form-control mb-3" type="file" aria-label="upload" id="UploadAvatar">
+                <button type="submit" class="btn btn-primary mb-3">Register!</button>
+
+            </div>
+        </div>
+
+    </div>
+
+  </div>
+{% endblock %}
+{% block right_section %}
+    {% include 'layouts/tag_section.html' %}
+{% endblock %}

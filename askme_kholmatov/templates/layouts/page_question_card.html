@@ -1,0 +1,21 @@
+{% load static %}
+<div class="card border-0">
+    <div class="row g-0">
+
+        <div class="col-3 d-flex flex-column align-items-center p-2">
+            <img src="{% static 'img/freak.jpg' %}" class="card-img mb-2 w-75" alt="Avatar">
+            <input class="form-control w-75" type="number" value="5" ></input>
+        </div>
+        <div class="col-9 d-flex flex-column">
+
+                <h3 class="card-title">{{ question.title }}</h3>
+                <p class="card-text">{{ question.text }} </p>
+                <div class="d-flex">
+                    {% for tag in question.tags %}
+                      <a href="{% url 'tag' question_tag=tag %}" class="card-link">{{tag}}</a>
+                    {% endfor %}
+                </div>
+        </div>
+
+    </div>
+</div>

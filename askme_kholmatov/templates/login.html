@@ -1,0 +1,41 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block page_title %}
+<div class="d-flex gap-3 align-items-center">
+    <h1>Log In</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="row mt-4">
+            <div class="col-3">
+                <label for="Login" class="col-form-label">Login</label>
+            </div>
+            <div class="col">
+                <input class="form-control mb-3" type="text" placeholder="Enter your login here" aria-label="login" id="Login">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <label for="inputPassword" class="col-form-label" placeholder="********">Password</label>
+            </div>
+            <div class="col">
+                <input type="password" class="form-control mb-3" id="inputPassword">
+                <button type="submit" class="btn btn-primary mb-3">Log In!</button>
+                <div>
+                    <a class="href=#">create new account</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+{% endblock %}
+{% block right_section %}
+    {% include 'layouts/tag_section.html' %}
+{% endblock %}
+
+
+     

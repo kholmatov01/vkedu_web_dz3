@@ -1,0 +1,20 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+        {% include 'layouts/page_question_card.html' with question=item %}
+<hr>
+<div class="row justify-content-center">
+        <div class="col-11">
+                {% include 'layouts/response_card.html' %} 
+                {% include 'layouts/response_card.html' %} 
+                {% include 'layouts/response_card.html' %} 
+                {% include 'layouts/response_card.html' %} 
+                {% include 'layouts/response_card.html' %} 
+                {% include 'layouts/response_card.html' %} 
+        </div>
+</div>
+{% endblock %}
+{% block right_section %}
+    {% include 'layouts/tag_section.html' %}
+{% endblock %}

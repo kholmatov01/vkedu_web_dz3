@@ -1,0 +1,24 @@
+{% load static %}
+<section class="mb-3">
+    <h2>Popular Tags</h2>
+    <div>
+        <a href="{% url 'tag' question_tag='bender' %}" class="m-1">bender</a>
+        <a href="{% url 'tag' question_tag='vasya' %}" class="m-1">vasya</a>
+        <a href="{% url 'tag' question_tag='bamonka' %}" class="m-1">bamonka</a>
+        <a href="{% url 'tag' question_tag='safsa' %}" class="m-1">safsa</a>
+        <a href="{% url 'tag' question_tag='gosuslugi' %}" class="m-1">gosuslugi</a>
+    </div>
+</section>
+
+<section>
+    <h2>Best members</h2>
+    <div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a href="#">Member</a></li>
+            <li class="list-group-item"><a href="#">Member</a></li>
+            <li class="list-group-item"><a href="#">Member</a></li>
+            <li class="list-group-item"><a href="#">Member</a></li>
+            <li class="list-group-item"><a href="#">Member</a></li>
+        </ul>
+    </div>
+</section>
