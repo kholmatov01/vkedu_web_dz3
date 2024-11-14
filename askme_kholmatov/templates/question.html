@@ -6,12 +6,9 @@
 <hr>
 <div class="row justify-content-center">
         <div class="col-11">
-                {% include 'layouts/response_card.html' %} 
-                {% include 'layouts/response_card.html' %} 
-                {% include 'layouts/response_card.html' %} 
-                {% include 'layouts/response_card.html' %} 
-                {% include 'layouts/response_card.html' %} 
-                {% include 'layouts/response_card.html' %} 
+                {% for answer in answers %}
+                        {% include 'layouts/response_card.html'%} 
+                {% endfor %}
         </div>
 </div>
 {% endblock %}

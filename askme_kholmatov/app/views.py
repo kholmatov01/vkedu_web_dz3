@@ -16,7 +16,7 @@ QUESTIONS = [
 # Create your views here.
 def index(request):
     page_num = int(request.GET.get('page', 1))
-    paginator = Paginator(*(Question.objects.get_new()), per_page=6)
+    paginator = Paginator((Question.objects.get_new()), per_page=6)
     page = paginator.page(page_num)
     return render(
         request, template_name='index.html', 
@@ -32,7 +32,7 @@ def hot(request):
     hot_questions = copy.deepcopy(QUESTIONS)
     hot_questions.reverse()
     page_num = int(request.GET.get('page', 1))
-    paginator = Paginator(*(Question.objects.get_hot()), per_page=6)
+    paginator = Paginator((Question.objects.get_hot()), per_page=6)
     page = paginator.page(page_num)
     return render(
         request, template_name='hot.html', 
@@ -41,14 +41,15 @@ def hot(request):
 def tag(request, question_tag):
     tag_p = Tag.objects.get(tag__exact=question_tag)
     page_num = int(request.GET.get('page', 1))
-    paginator = Paginator(*(Question.objects.get_with_tag(tag_p)), per_page=6)
+    paginator = Paginator((Question.objects.get_with_tag(tag_p)), per_page=6)
     page = paginator.page(page_num)
     return render(request, template_name='tag.html', 
                   context={'questions': page.object_list, 'tag': question_tag, "page_obj": page})
 
 def question(request, question_id):
-    one_question = (Tag.objects.get(pk=question_id))
-    return render(request, template_name='question.html', context={'item': one_question})
+    one_question = Question.objects.get(id__exact=question_id)
+    answers_qs = Answer.objects.get_with_question(one_question)
+    return render(request, template_name='question.html', context={'item': one_question, 'answers': answers_qs})
 
 def login(request):
     return render(request, template_name='login.html')

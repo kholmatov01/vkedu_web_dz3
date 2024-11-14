@@ -47,6 +47,7 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     body = models.TextField()
     objects = AnswerManager()
+    correct = models.BooleanField(default=False)
     def __str__(self):
         return self.user.username + '(' + self.question.title + ')'
     
