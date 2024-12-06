@@ -8,29 +8,34 @@
 
 {% block content %}
 <div class="row">
-    <div class="col">
-        <div class="row mt-4">
-            <div class="col-3">
-                <label for="Login" class="col-form-label">Login</label>
-            </div>
-            <div class="col">
-                <input class="form-control mb-3" type="text" placeholder="Enter your login here" aria-label="login" id="Login">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <label for="inputPassword" class="col-form-label" placeholder="********">Password</label>
-            </div>
-            <div class="col">
-                <input type="password" class="form-control mb-3" id="inputPassword">
-                <button type="submit" class="btn btn-primary mb-3">Log In!</button>
-                <div>
-                    <a class="href=#">create new account</a>
+    <form action="" method="POST">
+        <div class="col">
+            <div class="row mt-4">
+                <div class="col-3">
+                    <label for="username" class="col-form-label">Username</label>
+                </div>
+                <div class="col">
+                    <input class="form-control mb-3" type="text" name="username" placeholder="Enter your username here" id="Username">
                 </div>
             </div>
+            <div class="row">
+                <div class="col-3">
+                    <label for="inputPassword" class="col-form-label">Password</label>
+                </div>
+                <div class="col">
+                    <input class="form-control mb-3" type="password" name="password" id="inputPassword">
+                    <button type="submit" class="btn btn-primary mb-3">Log In!</button>
+                    <div>
+                        <a class="{% url 'signup' %}">create new account</a>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-danger" role="alert">
+                {{ err_msg }}
+              </div>
+            
         </div>
-
-    </div>
+    </form>
     </div>
 {% endblock %}
 {% block right_section %}

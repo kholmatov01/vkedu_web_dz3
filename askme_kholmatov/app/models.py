@@ -22,7 +22,10 @@ class QuestionManager(models.Manager):
         return self.annotate(likes_count=Count('questionlike')).order_by('-created_at')
     def get_with_tag(self, tag_p):
         return self.filter(tags__exact=tag_p).annotate(likes_count=Count('questionlike')).order_by('-likes_count')
+    def get_with_title(self, title_p):
+        return self.filter(title__exact=title_p).annotate(likes_count=Count('questionlike')).order_by('-likes_count')
     
+
 class Question(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)

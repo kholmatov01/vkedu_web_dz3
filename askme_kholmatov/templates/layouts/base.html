@@ -19,21 +19,26 @@
                   <span class="navbar-toggler-icon"></span>
               </button>
 
-              <form class="d-flex" role="search">
-                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <form action = "{% url 'title' %}" class="d-flex">
+                  <input class="form-control me-2" type="text" name="search" placeholder="Search" aria-label="Search">
                   <button class="btn btn-outline-success" type="submit">Ask</button>
               </form>
 
               <div class="d-flex gap-1">
+                {% if request.user.is_authenticated %}
                   <img src="asda.jpg" alt="Avatar" class="img-thumbnail">
                   <div>
                       <div>
-                          dr pepper
+                          {{ request.user.username }}
                       </div>
                       <a href="#">settings</a>
-                      <a href="{% url 'login' %}">log out</a>
+                      <a href="{% url 'logout' %}">log out</a>
+                    </div>
                   </div>
-              </div>
+                  {% else %}
+                  
+                  <a href="{% url 'login' %}">log in</a>
+                  {% endif %}
           </div>
       </div>
   </nav>

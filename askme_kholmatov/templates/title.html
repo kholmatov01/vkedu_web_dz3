@@ -1,0 +1,17 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block page_title %}
+<div class="d-flex gap-3 align-items-center">
+    <h1>Title: {{title}}</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+            {% for question in questions %}
+                {% include 'layouts/base_question_card.html' %}
+            {% endfor %}
+            {% include 'layouts/pagination.html' with page=page_obj %}
+{% endblock %}
+{% block right_section %}
+    {% include 'layouts/tag_section.html' %}
+{% endblock %}
