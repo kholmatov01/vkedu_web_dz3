@@ -7,7 +7,8 @@ from app.models import *
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
-from app.forms import LoginForm
+from app.forms import *
+
 
 QUESTIONS = [
     {
@@ -61,8 +62,16 @@ def tag(request, question_tag):
     return render(request, template_name='tag.html', 
                   context={'questions': page.object_list, 'tag': question_tag, "page_obj": page})
 
+
 def question(request, question_id):
-    one_question = Question.objects.get(id__exact=question_id)
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        if form.is_valid:
+            # ВОТ ТУТ НАДО В БАЗУ ПОЛОЖИТЬ ОТВЕТ
+            err_msg = 'fuck'
+        else:
+            err_msg = 'something wrong with the form'
+    one_question = Question.objects.get_with_id(question_id)
     answers_qs = Answer.objects.get_with_question(one_question)
     return render(request, template_name='question.html', context={'item': one_question, 'answers': answers_qs})
 
@@ -70,13 +79,16 @@ def login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            user = auth.authenticate(form)
+            user = auth.authenticate(request, **form.cleaned_data)
             if user:
                 auth.login(request, user)
                 return redirect(reverse('index'))
             else:
-                err_msg = 'wrong username or password'
+                err_msg = 'Wrong username or password'
                 return render(request, template_name='login.html', context={'err_msg': err_msg})
+        else:
+            err_msg = 'Not valid form'
+            return render(request, template_name='login.html', context={'err_msg': err_msg})
     return render(request, template_name='login.html', context={'err_msg': ''})
 
 def logout(request):

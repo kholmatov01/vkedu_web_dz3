@@ -13,33 +13,36 @@
                             <label for="titleform" class="form-label">Title</label>
                         </div>
                         <div class="col-11">
-                            <input class="form-control" id="titleform" placeholder="How to build a moonpark?">
+                            <input class="form-control" name="title" id="titleform" placeholder="How to build a moonpark?">
                         </div>
                     </div>
               </div>
-              <div class="mt-2">
-                <div class="row align-items-center">
-                    <div class="col-1">
-                        <label for="textform" class="form-label">Text</label>
-                    </div>
-                    <div class="col-11">
-                        <textarea class="form-control" id="textform" placeholder="Really how? Have no idea about it" rows="10"></textarea>
-                    </div>
+              <form action="" method="POST">
+
+                  <div class="mt-2">
+                      <div class="row align-items-center">
+                          <div class="col-1">
+                              <label for="textform" class="form-label">Text</label>
+                            </div>
+                            <div class="col-11">
+                                <input class="form-control" name="text" id="textform" placeholder="Really how? Have no idea about it" rows="10"></textarea>
+                            </div>
                 </div>
-              </div>
+            </div>
               <div class="mt-2">
                 <div class="row align-items-center">
                     <div class="col-1">
                         <label for="tagsform" class="form-label">Tags</label>
                     </div>
                     <div class="col-11">
-                        <input class="form-control" id="tagsform" placeholder="moon, park, puzzle">
+                        <input class="form-control" name="tags" id="tagsform" placeholder="moon, park, puzzle">
                     </div>
                 </div>
               </div>
               <div class="mt-3 align-items-center">
-                <button type="button" class="btn btn-secondary">ASK!</button>
+                <button type="submit" class="btn btn-primary">Ask!</button>
               </div>
+            </form>
 {% endblock %}
 {% block right_section %}
     {% include 'layouts/tag_section.html' %}

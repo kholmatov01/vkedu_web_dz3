@@ -24,6 +24,8 @@ class QuestionManager(models.Manager):
         return self.filter(tags__exact=tag_p).annotate(likes_count=Count('questionlike')).order_by('-likes_count')
     def get_with_title(self, title_p):
         return self.filter(title__exact=title_p).annotate(likes_count=Count('questionlike')).order_by('-likes_count')
+    def get_with_id(self, id):
+        return self.filter(id__exact=id).annotate(likes_count=Count('questionlike')).get(id__exact=id)
     
 
 class Question(models.Model):

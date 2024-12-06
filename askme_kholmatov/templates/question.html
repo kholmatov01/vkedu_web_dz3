@@ -9,6 +9,21 @@
                 {% for answer in answers %}
                         {% include 'layouts/response_card.html'%} 
                 {% endfor %}
+                {% if request.user.is_authenticated %}
+                <form action="" method="POST">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="answerform" class="col-form-label">Your answer</label>
+                                </div>
+                                <div class="col">
+                                    <input class="form-control mb-3" type="text" name="answer" id="answerform">
+                                    <button type="submit" class="btn btn-primary mb-3">Answer!</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                {% endif %}
         </div>
 </div>
 {% endblock %}
