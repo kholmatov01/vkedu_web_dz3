@@ -37,7 +37,7 @@ class Question(models.Model):
         ('s', 'Solved'),
         ('ns', 'Not Solved'),
     ]
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='ns')
     tags = models.ManyToManyField(Tag)
     objects = QuestionManager()
     def __str__(self):
@@ -51,8 +51,8 @@ class Answer(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     body = models.TextField()
-    objects = AnswerManager()
     correct = models.BooleanField(default=False)
+    objects = AnswerManager()
     def __str__(self):
         return self.user.username + '(' + self.question.title + ')'
     

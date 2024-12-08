@@ -64,16 +64,21 @@ def tag(request, question_tag):
 
 
 def question(request, question_id):
+    err_msg = ''
+    one_question = Question.objects.get_with_id(question_id)
     if request.method == 'POST':
-        form = QuestionForm(request.POST)
+        form = AnswerForm(request.POST)
         if form.is_valid:
-            # ВОТ ТУТ НАДО В БАЗУ ПОЛОЖИТЬ ОТВЕТ
-            err_msg = 'fuck'
+            new_answer = Answer.objects.create(
+                user = request.user,
+                question = one_question,
+                body = form.cleaned_data['body'],
+            )
+            new_answer.save()
         else:
             err_msg = 'something wrong with the form'
-    one_question = Question.objects.get_with_id(question_id)
     answers_qs = Answer.objects.get_with_question(one_question)
-    return render(request, template_name='question.html', context={'item': one_question, 'answers': answers_qs})
+    return render(request, template_name='question.html', context={'item': one_question, 'answers': answers_qs, 'err_msg':err_msg})
 
 def login(request):
     if request.method == 'POST':

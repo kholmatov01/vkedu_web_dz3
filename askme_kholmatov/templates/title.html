@@ -2,7 +2,7 @@
 {% load static %}
 {% block page_title %}
 <div class="d-flex gap-3 align-items-center">
-    <h1>Title: {{title}}</h1>
+    <h1>Search: {{title}}</h1>
 </div>
 {% endblock %}
 
@@ -10,6 +10,7 @@
             {% for question in questions %}
                 {% include 'layouts/base_question_card.html' %}
             {% endfor %}
+            <a href="{% url 'ask' %}">Didn't found right question? Ask!</a>
             {% include 'layouts/pagination.html' with page=page_obj %}
 {% endblock %}
 {% block right_section %}
