@@ -5,8 +5,9 @@ from django.db.models import Count
 
 
 class Profile(models.Model):
-    username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    avatar = models.ImageField(blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, default='bred')
+    avatar = models.ImageField(blank=True, null=True)
     def __str__(self):
         return self.username.username
 

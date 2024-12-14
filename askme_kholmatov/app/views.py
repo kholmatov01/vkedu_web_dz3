@@ -6,7 +6,7 @@ from django.urls import reverse
 from app.models import *
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.forms import UserCreationForm
 from app.forms import *
 
 
@@ -26,7 +26,7 @@ def index(request):
     page = paginator.page(page_num)
     return render(
         request, template_name='index.html', 
-        context={'questions': page.object_list, 'page_obj': page})
+        context={'questions': page.object_list, 'page_obj': page, 'profile': Profile.objects.get(user__exact=request.user)})
 
 def title(request):
     question_title = request.GET.get('search')
@@ -35,11 +35,10 @@ def title(request):
     page = paginator.page(page_num)
     return render(
         request, template_name='title.html', 
-        context={'questions': page.object_list, 'page_obj': page, 'title': question_title})
+        context={'questions': page.object_list, 'page_obj': page, 'title': question_title, 'profile': Profile.objects.get(user__exact=request.user)})
 
 @login_required
 def ask(request):
-    err_msg = ''
     if request.method == 'POST':
         form = QuestionForm(request.POST)
         if form.is_valid():
@@ -49,27 +48,28 @@ def ask(request):
             form.save_m2m()  
             return redirect(reverse('question', args=[question.id]))
         else:
-            err_msg = 'form error'
-            return render(request, template_name='ask.html', context={'err_msg': err_msg, 'form': form})
+            return render(request, template_name='ask.html', context={'form': form, 'profile': Profile.objects.get(user__exact=request.user)})
     else:
-        return render(request, template_name='ask.html', context={'err_msg': err_msg, 'form': QuestionForm()})
+        return render(request, template_name='ask.html', context={'form': QuestionForm(), 'profile': Profile.objects.get(user__exact=request.user)})
 
 def signup(request):
-    err_msg = ''
     if request.method == 'POST':
-        form = SignupForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
-            new_profile = Profile.objects.create(
-                username = new_user
+            print("form is good")
+            Profile.objects.create(
+                user=new_user,
+                name=new_user.username,
             )
             auth.login(request, new_user)
-            new_profile.save()
             return redirect(reverse('index'))
         else:
-            render(request, template_name='signup.html', context={'err_msg': err_msg, 'form': form})
+            print("form is bad")
+
+            render(request, template_name='signup.html', context={'form': form, 'profile': Profile.objects.get(user__exact=request.user)})
     else:
-        return render(request, template_name='signup.html', context={'err_msg': err_msg, 'form': SignupForm()})
+        return render(request, template_name='signup.html', context={'form': UserCreationForm(), 'profile': Profile.objects.get(user__exact=request.user)})
 
 def hot(request):
     hot_questions = copy.deepcopy(QUESTIONS)
@@ -79,7 +79,7 @@ def hot(request):
     page = paginator.page(page_num)
     return render(
         request, template_name='hot.html', 
-        context={'questions': page.object_list, 'page_obj': page})
+        context={'questions': page.object_list, 'page_obj': page, 'profile': Profile.objects.get(user__exact=request.user)})
 
 def tag(request, question_tag):
     tag_p = Tag.objects.get(tag__exact=question_tag)
@@ -87,11 +87,10 @@ def tag(request, question_tag):
     paginator = Paginator((Question.objects.get_with_tag(tag_p)), per_page=6)
     page = paginator.page(page_num)
     return render(request, template_name='tag.html', 
-                  context={'questions': page.object_list, 'tag': question_tag, "page_obj": page})
+                  context={'questions': page.object_list, 'tag': question_tag, "page_obj": page, 'profile': Profile.objects.get(user__exact=request.user)})
 
 
 def question(request, question_id):
-    err_msg = ''
     one_question = Question.objects.get_with_id(question_id)
     if request.method == 'POST':
         form = AnswerForm(request.POST)
@@ -102,10 +101,10 @@ def question(request, question_id):
                 body = form.cleaned_data['body'],
             )
             new_answer.save()
-        else:
-            err_msg = 'something wrong with the form'
+    else:
+        form = AnswerForm()
     answers_qs = Answer.objects.get_with_question(one_question)
-    return render(request, template_name='question.html', context={'item': one_question, 'answers': answers_qs, 'err_msg':err_msg})
+    return render(request, template_name='question.html', context={'item': one_question, 'answers': answers_qs, 'form':form, 'profile': Profile.objects.get(user__exact=request.user)})
 
 def login(request):
     if request.method == 'POST':
@@ -116,10 +115,10 @@ def login(request):
                 auth.login(request, user)
                 return redirect(reverse('index'))
             else:
-                return render(request, template_name='login.html', context={'form': form})
+                return render(request, template_name='login.html', context={'form': form, 'profile': Profile.objects.get(user__exact=request.user)})
         else:
-            return render(request, template_name='login.html', context={'form': form})
-    return render(request, template_name='login.html', context={'form': LoginForm})
+            return render(request, template_name='login.html', context={'form': form, 'profile': Profile.objects.get(user__exact=request.user)})
+    return render(request, template_name='login.html', context={'form': LoginForm(), 'profile': Profile.objects.get(user__exact=request.user)})
 
 def logout(request):
     auth.logout(request)
@@ -127,4 +126,14 @@ def logout(request):
 
 @login_required
 def profile(request):
-    return render(request, template_name='index.html')
+    if request.method == 'POST':
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            profile = Profile.objects.get(user__exact=request.user)
+            profile.name = form.cleaned_data.get('name')
+            profile.avatar = form.cleaned_data.get('avatar')
+            profile.save()
+            form = ProfileForm(profile)
+    else:
+        form = ProfileForm(instance=Profile.objects.get(user__exact = request.user.id))
+    return render(request, template_name='profile.html', context={'form': form, 'profile': Profile.objects.get(user__exact=request.user)})

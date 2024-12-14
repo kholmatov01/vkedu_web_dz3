@@ -1,5 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
+{% load bootstrap5 %}
 
 {% block content %}
         {% include 'layouts/page_question_card.html' with question=item %}
@@ -11,17 +12,8 @@
                 {% endfor %}
                 {% if request.user.is_authenticated %}
                 <form action="" method="POST">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-2">
-                                    <label for="answerform" class="col-form-label">Your answer</label>
-                                </div>
-                                <div class="col">
-                                    <input class="form-control mb-3" type="text" name="body" id="answerform">
-                                    <button type="submit" class="btn btn-primary mb-3">Answer!</button>
-                                </div>
-                            </div>
-                        </div>
+                    {% bootstrap_form form layout='horizontal' %}
+                    <button type="submit" class="btn btn-primary mb-3">Answer!</button>
                     </form>
                 {% endif %}
         </div>

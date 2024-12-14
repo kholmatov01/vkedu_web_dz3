@@ -30,7 +30,7 @@
                       <div>
                           {{ request.user.username }}
                       </div>
-                      <a href="#">settings</a>
+                      <a href="{% url 'profile' %}">settings</a>
                       <a href="{% url 'logout' %}">log out</a>
                     </div>
                   </div>

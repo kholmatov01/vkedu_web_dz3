@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
+    username = forms.CharField(label='Login')
     password = forms.CharField(widget=forms.PasswordInput)
 
     def clean(self):
@@ -20,7 +20,7 @@ class LoginForm(forms.Form):
 
 class QuestionForm(forms.ModelForm):
     title = forms.CharField()
-    body = forms.CharField()
+    body = forms.CharField(widget=forms.Textarea, label='Description')
     tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all())
     
 
@@ -33,7 +33,7 @@ class QuestionForm(forms.ModelForm):
         ]
 
 class AnswerForm(forms.Form):
-    body = forms.CharField()
+    body = forms.CharField(widget=forms.Textarea, label='Answer')
 
     class Meta:
         model = Answer
@@ -41,13 +41,11 @@ class AnswerForm(forms.Form):
             'body'
         ]
 
+class ProfileForm(forms.ModelForm):
 
-class SignupForm(forms.ModelForm):
-    
     class Meta:
-        model = User
+        model = Profile
         fields = [
-            'username',
-            'email',
-            'password',
+            'name',
+            'avatar'
         ]

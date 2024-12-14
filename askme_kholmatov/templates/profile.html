@@ -1,0 +1,23 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load bootstrap5 %}
+{% block page_title %}
+<div class="d-flex gap-3 align-items-center">
+    <h1>Profile</h1>
+</div>
+{% endblock %}
+{% block content %}
+    <div class="row my-4">
+        <div class="col d-flex justify-content-center align-items-center">
+            <img src="{% static 'img/freak.jpg' %}" class="img-fluid rounded" alt="Avatar">
+        </div>
+        <div class="col-8">
+            <form action="" method="post">
+                {% bootstrap_form form %}
+                <button type="submit" class="btn btn-primary">Change!</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+
