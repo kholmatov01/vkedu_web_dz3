@@ -39,10 +39,37 @@ def title(request):
 
 @login_required
 def ask(request):
-    return render(request, template_name='ask.html')
+    err_msg = ''
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.user = request.user
+            question.save()
+            form.save_m2m()  
+            return redirect(reverse('question', args=[question.id]))
+        else:
+            err_msg = 'form error'
+            return render(request, template_name='ask.html', context={'err_msg': err_msg, 'form': form})
+    else:
+        return render(request, template_name='ask.html', context={'err_msg': err_msg, 'form': QuestionForm()})
 
 def signup(request):
-    return render(request, template_name='signup.html')
+    err_msg = ''
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            new_profile = Profile.objects.create(
+                username = new_user
+            )
+            auth.login(request, new_user)
+            new_profile.save()
+            return redirect(reverse('index'))
+        else:
+            render(request, template_name='signup.html', context={'err_msg': err_msg, 'form': form})
+    else:
+        return render(request, template_name='signup.html', context={'err_msg': err_msg, 'form': SignupForm()})
 
 def hot(request):
     hot_questions = copy.deepcopy(QUESTIONS)
@@ -68,7 +95,7 @@ def question(request, question_id):
     one_question = Question.objects.get_with_id(question_id)
     if request.method == 'POST':
         form = AnswerForm(request.POST)
-        if form.is_valid:
+        if form.is_valid():
             new_answer = Answer.objects.create(
                 user = request.user,
                 question = one_question,
@@ -89,12 +116,10 @@ def login(request):
                 auth.login(request, user)
                 return redirect(reverse('index'))
             else:
-                err_msg = 'Wrong username or password'
-                return render(request, template_name='login.html', context={'err_msg': err_msg})
+                return render(request, template_name='login.html', context={'form': form})
         else:
-            err_msg = 'Not valid form'
-            return render(request, template_name='login.html', context={'err_msg': err_msg})
-    return render(request, template_name='login.html', context={'err_msg': ''})
+            return render(request, template_name='login.html', context={'form': form})
+    return render(request, template_name='login.html', context={'form': LoginForm})
 
 def logout(request):
     auth.logout(request)
